@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+#app{
+  @apply bg-white pt-12
+}
+main{
+  @apply w-9/12 bg-pink-50 border-2 rounded-3xl ml-auto mr-auto mb-12 pb-10 text-center text-fuchsia-900 text-xl;
+}
+h1{
+  @apply font-black mt-10 mb-10 text-fuchsia-900 text-4xl
+}
+select,input[type="text"]{
+  @apply w-3/5 h-10 rounded-md mt-5
+}
+textarea{
+  @apply w-3/5 rounded-md mt-5
+}
+p{
+  @apply mt-5
+}
+input[type="checkbox"]{
+
+}
+input[type="button"]{
+  @apply w-40 h-10 bg-purple-700 text-white rounded-md mt-5 hover:bg-fuchsia-900 transition-all
+}
