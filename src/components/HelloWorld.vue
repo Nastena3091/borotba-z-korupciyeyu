@@ -1,92 +1,74 @@
 <script>
 import { ref } from 'vue'
-import MsgSend from "./MsgSend.vue";
 import  institut from "../data/institution"
-import types from "../data/types"
-import areas from "../data/areas"
-export default{
-  data(){
-    return{
-      institutions:[],
-      types: [],
-      areas: [],
-      institution : '',
-      type:'',
-      area:'',
-      position:'',
-      teacher:'',
-      offense:'',
-      student:'',
-      adress:'',
-      msg:'',
-      inputSingly:false,
-      anonimus: false,
-      isOpen:false
-    }
-  },
+import typ from "../data/types"
+import are from "../data/areas"
+import MsgSend from "./MsgSend.vue"
+
+export default {
   components: { MsgSend },
   setup() {
-    const isOpen = ref(false);
-    return { isOpen };
-  },
-  mounted(){
-    this.areas=areas
-  },
-  methods:{
-    selectInstitution(){
-      this.institutions=institut
-      console.log(this.type)
-      console.log(this.area)
-      this.institutions=this.institutions.filter((elem)=>{
-        return elem.type==this.type&&elem.area==this.area
+    var isOpen = ref(false),
+          institutions=ref([]),
+          types=typ,
+          areas=are,
+          institution=ref(''),
+          type=ref(''),
+          area=ref(''),
+          position=ref(''),
+          teacher=ref(''),
+          offense=ref(''),
+          student=ref(''),
+          adress=ref(''),
+          msg=ref(''),
+          inputSingly=ref(false),
+          anonimus=ref(false)
+    
+    function selectInstitution(){
+      institutions.value=institut.filter((elem)=>{
+        return elem.type==type.value&&elem.area==area.value
       })
-    },
-    selectType(){
-      this.types=types
-    },
-    sendEmail(){
-      console.log(this.institution)
-      console.log(this.position)
-      console.log(this.teacher)
-      console.log(this.offense)
-      console.log(this.student)
-      console.log(this.adress)
-      if(!this.anonimus){
-        if(this.student && this.institution&&this.position&&this.teacher&&this.offense&&this.adress){
-          emailjs.send("service_vpjca4j","template_yfjgoe4",{
-            institution: this.institution,
-            position: this.position,
-            teacher: this.teacher,
-            offense: this.offense,
-            student: this.student,
-            address: this.adress,
-            to_email: "sladkovaoe@gmail.com"
-          })
-          this.msg="Ваш лист успішно надіслан!"
-        }else this.msg="Не всі поля заповлені."
-      } else{
-        if(this.institution&&this.position&&this.teacher&&this.offense){
-          emailjs.send("service_vpjca4j","template_12y0r47",{
-            institution: this.institution,
-            position: this.position,
-            teacher: this.teacher,
-            offense: this.offense,
-            to_email:"sladkovaoe@gmail.com",
-          })
-          this.msg="Ваш лист успішно надіслан!"
-        }else this.msg="Не всі поля заповлені."
-      }
-      this.isOpen = true
-      this.area='',
-      this.type='',
-      this.institution=''
-      this.position=''
-      this.teacher=''
-      this.offense=''
-      this.student=''
-      this.adress=''
+      console.log(institutions)
     }
-  }
+    function sendEmail(){
+      if(!anonimus.value){
+        if(student.value && institution.value&&position.value&&teacher.value&&offense.value&&adress.value){
+          emailjs.send("service_vpjca4j","template_yfjgoe4",{
+            institution: institution.value,
+            position: position.value,
+            teacher: teacher.value,
+            offense: offense.value,
+            student: student.value,
+            address: adress.value,
+            to_email: "nastena20043091@gmail.com"
+          })
+          msg.value="Ваш лист успішно надіслан!"
+        }else msg.value="Не всі поля заповлені."
+      } else{
+        if(institution.value&&position.value&&teacher.value&&offense.value){
+          emailjs.send("service_vpjca4j","template_12y0r47",{
+            institution: institution.value,
+            position: position.value,
+            teacher: teacher.value,
+            offense: offense.value,
+            to_email:"nastena20043091@gmail.com",
+          })
+          msg.value="Ваш лист успішно надіслан!"
+        }else msg.value="Не всі поля заповлені."
+      }
+      isOpen.value = true
+      area.value='',
+      type.value='',
+      institution.value=''
+      position.value=''
+      teacher.value=''
+      offense.value=''
+      student.value=''
+      adress.value=''
+    }
+    return { isOpen, institutions, types,areas,institution,type,area,position,teacher,offense,student,adress,msg,inputSingly,anonimus, selectInstitution, sendEmail};
+    
+  },
 }
 </script>
 
@@ -96,7 +78,7 @@ export default{
     <input type="checkbox" v-model="inputSingly">Ввести самостійно навчальний заклад
     <div id="institution" v-if="!inputSingly">
       <p>Вищій навчальний заклад:</p>
-      <select id="areas" v-model="area" @change="selectType">
+      <select id="areas" v-model="area">
         <option value="">Регіон</option>
         <option :value="a" v-for="a in areas" :key="a">{{a}}</option>
       </select>
